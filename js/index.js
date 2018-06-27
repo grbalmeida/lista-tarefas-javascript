@@ -4,6 +4,7 @@
 	const btn = document.querySelector('[data-js="btn"]');
 	const listaTarefas = document.querySelector('[data-js="listaTarefas"]');
 	const quantidadeTarefas = document.querySelector('[data-js="quantidadeTarefas"]');
+	const body = document.querySelector('body');
 
 	btn.addEventListener('click', validarCampo);
 	inputTarefa.addEventListener('keydown', enter);
@@ -17,16 +18,23 @@
 
 	function addTarefa() {
 
+		const fragment = document.createDocumentFragment();
 		const btnApagar = document.createElement('button');
 		const btnApagarContent = document.createTextNode('Apagar tarefa');
 		btnApagar.classList.add('apagar');
 		const novaTarefa = document.createElement('li');
+		const span = document.createElement('span');
 		const novaTarefaContent = document.createTextNode(inputTarefa.value);
+		const tarefaConcluida = document.createElement('input');
+		tarefaConcluida.setAttribute('type', 'checkbox')
 
+		span.appendChild(novaTarefaContent)
 		btnApagar.appendChild(btnApagarContent);
-		novaTarefa.appendChild(novaTarefaContent);
-		novaTarefa.appendChild(btnApagar);
+		fragment.appendChild(span);
+		fragment.appendChild(tarefaConcluida);
+		fragment.appendChild(btnApagar);
 
+		novaTarefa.appendChild(fragment);
 		listaTarefas.appendChild(novaTarefa);
 
 		limparCampo();
@@ -46,26 +54,38 @@
 
 	function atualizarQuantidadeTarefas() {
 		const lis = document.querySelectorAll('li');
-		console.log(lis);
-		if(lis.length > 0) {
-			const qtd = lis.length;
-			quantidadeTarefas.textContent = qtd == 1 ? `1 tarefa a ser concluída` : `${qtd} tarefas a serem concluídas`;
+		const qtd = Array.from(lis)
+						.filter(li => !li.firstElementChild.classList.contains('concluida'))
+						.length;
+
+		if(qtd != 1) {
+			quantidadeTarefas.textContent = `${qtd} tarefas a serem concluídas`;
+		} else {
+			quantidadeTarefas.textContent = `${qtd} tarefa a ser concluída`;
 		}
+
 	}
 
-	document.querySelector('body').addEventListener('click', function(event) {
-		if(event.target.tagName == 'BUTTON') {
-			if(event.target.classList.contains('apagar')) {
-				event.target.parentNode.parentNode.removeChild(event.target.parentNode);
-				atualizarQuantidadeTarefas();
-				limparDiv();
-			}
+	body.addEventListener('click', function(event) {
+		const target = event.target;
+		
+		if(target.classList.contains('apagar')) {
+			target.parentNode.parentNode.removeChild(target.parentNode);
+			atualizarQuantidadeTarefas();
+			limparDiv();
 		}
+
+		if(target.getAttribute('type') == 'checkbox') {
+			target.parentNode.firstElementChild.classList.toggle('concluida');
+			atualizarQuantidadeTarefas();
+		}
+
 	});
 
 	function limparDiv() {
 		const lis = document.querySelectorAll('li');
-		if(lis.length == 0) {
+		const qtd = lis.length;
+		if(qtd == 0) {
 			quantidadeTarefas.textContent = '';
 		}
 	}

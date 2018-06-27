@@ -9,5 +9,13 @@ li {
 }
 
 button {
-	margin-left: 20px;
+	margin-left: 10px;
+}
+
+input[type="checkbox"] {
+	margin-left: 10px;
+}
+
+.concluida {
+	text-decoration: line-through;
 }
