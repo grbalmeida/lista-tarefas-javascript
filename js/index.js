@@ -7,7 +7,6 @@
 	const body = document.querySelector('body');
 
 	btn.addEventListener('click', validarCampo);
-	inputTarefa.addEventListener('keydown', enter);
 
 	function validarCampo(event) {
 		event.preventDefault();
@@ -44,12 +43,6 @@
 	function limparCampo() {
 		inputTarefa.value = '';
 		inputTarefa.focus();
-	}
-
-	function enter(event) {
-		if(event.keyCode == 8) {
-			validarCampo();
-		}
 	}
 
 	function atualizarQuantidadeTarefas() {
