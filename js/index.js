@@ -10,7 +10,8 @@
 
 	function validarCampo(event) {
 		event.preventDefault();
-		if(inputTarefa.value) {
+		const valor = inputTarefa.value.trim();
+		if(valor) {
 			addTarefa();
 		}
 	}
