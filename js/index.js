@@ -53,10 +53,10 @@
 	}
 
 	function atualizarQuantidadeTarefas() {
-		const lis = document.querySelectorAll('li');
+		const lis = getLis();
 		const qtd = Array.from(lis)
-						.filter(li => !li.firstElementChild.classList.contains('concluida'))
-						.length;
+					.filter(li => !li.firstElementChild.classList.contains('concluida'))
+					.length;
 
 		if(qtd != 1) {
 			quantidadeTarefas.textContent = `${qtd} tarefas a serem concluídas`;
@@ -83,11 +83,14 @@
 	});
 
 	function limparDiv() {
-		const lis = document.querySelectorAll('li');
-		const qtd = lis.length;
+		const qtd = getLis().length;
 		if(qtd == 0) {
 			quantidadeTarefas.textContent = '';
 		}
+	}
+
+	function getLis() {
+		return document.querySelectorAll('li');
 	}
 
 })();
